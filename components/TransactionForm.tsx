@@ -3,16 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -27,8 +17,8 @@ interface TransactionFormProps {
   onAddTransaction: (transaction: {
     amount: number;
     type: TransactionType;
-    category: string;
-    description: string;
+    category?: string;
+    description?: string;
     date: string;
   }) => void;
 }
@@ -47,126 +37,107 @@ const CATEGORIES = {
 };
 
 export function TransactionForm({ onAddTransaction }: TransactionFormProps) {
-  const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<TransactionType>("EXPENSE");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || isNaN(Number(amount)) || !category || !description || !date)
-      return;
+    if (!amount || isNaN(Number(amount))) return;
 
     onAddTransaction({
       amount: Number(amount),
       type,
-      category,
-      description,
-      date,
+      category: category || "Other",
+      description: description || "New Transaction",
+      date: new Date().toISOString().split("T")[0], // Defaults to today
     });
 
-    // Reset and close
+    // Reset fields
     setAmount("");
-    setCategory("");
     setDescription("");
-    setDate(new Date().toISOString().split("T")[0]);
-    setOpen(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2 shadow-md">
-          <PlusCircle className="w-4 h-4" /> Add Transaction
+    <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-4 shadow-lg mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col md:flex-row gap-4 items-end"
+      >
+        <div className="flex-1 space-y-2 w-full">
+          <label className="text-xs font-medium text-muted-foreground ml-1">
+            Type
+          </label>
+          <Select
+            value={type}
+            onValueChange={(val: TransactionType) => {
+              setType(val);
+              setCategory("");
+            }}
+          >
+            <SelectTrigger className="bg-background/50 focus:ring-primary/20">
+              <SelectValue placeholder="Type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="EXPENSE">Expense</SelectItem>
+              <SelectItem value="INCOME">Income</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex-1 space-y-2 w-full">
+          <label className="text-xs font-medium text-muted-foreground ml-1">
+            Amount
+          </label>
+          <Input
+            type="number"
+            step="0.01"
+            placeholder="0.00"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            className="bg-background/50 focus-visible:ring-primary/20"
+            required
+          />
+        </div>
+
+        <div className="flex-[1.5] space-y-2 w-full">
+          <label className="text-xs font-medium text-muted-foreground ml-1">
+            Category (Optional)
+          </label>
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="bg-background/50 focus:ring-primary/20">
+              <SelectValue placeholder="Auto" />
+            </SelectTrigger>
+            <SelectContent>
+              {CATEGORIES[type].map((c) => (
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex-[2] space-y-2 w-full">
+          <label className="text-xs font-medium text-muted-foreground ml-1">
+            Description (Optional)
+          </label>
+          <Input
+            placeholder="What was this for?"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="bg-background/50 focus-visible:ring-primary/20"
+          />
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full md:w-auto gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/25 transition-all h-10"
+        >
+          <PlusCircle className="w-4 h-4" /> Add
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>New Transaction</DialogTitle>
-          <DialogDescription>
-            Record a new income or expense to your tracker.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="type">Type</Label>
-            <Select
-              value={type}
-              onValueChange={(val: TransactionType) => {
-                setType(val);
-                setCategory("");
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="EXPENSE">Expense</SelectItem>
-                <SelectItem value="INCOME">Income</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount</Label>
-            <Input
-              id="amount"
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
-            <Select value={category} onValueChange={setCategory} required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {CATEGORIES[type].map((c) => (
-                  <SelectItem key={c} value={c}>
-                    {c}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Input
-              id="description"
-              placeholder="Groceries, Rent, Salary..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="date">Date</Label>
-            <Input
-              id="date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          </div>
-
-          <DialogFooter className="pt-4">
-            <Button type="submit" className="w-full">
-              Save Transaction
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+      </form>
+    </div>
   );
 }
