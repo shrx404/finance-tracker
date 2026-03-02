@@ -9,21 +9,11 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { Transaction } from "@/types";
+import { Transaction, CATEGORY_CONFIG } from "@/types";
 
 interface ExpensePieChartProps {
   transactions: Transaction[];
 }
-
-const COLORS = [
-  "#0ea5e9", // sky-500
-  "#10b981", // emerald-500
-  "#f59e0b", // amber-500
-  "#8b5cf6", // violet-500
-  "#f43f5e", // rose-500
-  "#06b6d4", // cyan-500
-  "#ec4899", // pink-500
-];
 
 export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
   const data = useMemo(() => {
@@ -42,7 +32,11 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
     );
 
     return Object.entries(categories)
-      .map(([name, value]) => ({ name, value }))
+      .map(([name, value]) => ({
+        name,
+        value,
+        color: CATEGORY_CONFIG[name]?.colorHex || "#64748b",
+      }))
       .sort((a, b) => b.value - a.value);
   }, [transactions]);
 
@@ -57,7 +51,7 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
   }
 
   return (
-    <div className="h-[300px] w-full p-4 border border-border/40 rounded-2xl bg-card shadow-lg relative overflow-hidden group hover:border-primary/30 transition-all duration-500">
+    <div className="h-[300px] w-full p-4 border-[1px] rounded-2xl bg-card/30 backdrop-blur-2xl border-border/40 shadow-2xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500">
       <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
@@ -72,10 +66,7 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
             stroke="none"
           >
             {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+              <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
           <Tooltip

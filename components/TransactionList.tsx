@@ -1,4 +1,4 @@
-import { Transaction } from "@/types";
+import { Transaction, CATEGORY_CONFIG } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -16,21 +16,6 @@ interface TransactionListProps {
   onDelete: (id: string) => void;
 }
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Salary: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
-  Freelance: "bg-teal-500/15 text-teal-500 border-teal-500/30",
-  Investments: "bg-indigo-500/15 text-indigo-500 border-indigo-500/30",
-  Housing: "bg-rose-500/15 text-rose-500 border-rose-500/30",
-  Food: "bg-orange-500/15 text-orange-500 border-orange-500/30",
-  Transportation: "bg-blue-500/15 text-blue-500 border-blue-500/30",
-  Utilities: "bg-cyan-500/15 text-cyan-500 border-cyan-500/30",
-  Entertainment: "bg-purple-500/15 text-purple-500 border-purple-500/30",
-  Healthcare: "bg-red-500/15 text-red-500 border-red-500/30",
-  "Other Income": "bg-green-500/15 text-green-500 border-green-500/30",
-  "Other Expense": "bg-slate-500/15 text-slate-500 border-slate-500/30",
-  Other: "bg-slate-500/15 text-slate-500 border-slate-500/30",
-};
-
 export function TransactionList({
   transactions,
   onDelete,
@@ -44,8 +29,12 @@ export function TransactionList({
   };
 
   const getCategoryColor = (category?: string) => {
-    if (!category) return CATEGORY_COLORS["Other"];
-    return CATEGORY_COLORS[category] || CATEGORY_COLORS["Other"];
+    if (!category) return CATEGORY_CONFIG["Other"]?.colorClass || "";
+    return (
+      CATEGORY_CONFIG[category]?.colorClass ||
+      CATEGORY_CONFIG["Other"]?.colorClass ||
+      ""
+    );
   };
 
   if (transactions.length === 0) {

@@ -21,7 +21,7 @@ export default function Home() {
 
   if (!isLoaded) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+      <div className="flex min-h-screen w-full items-center justify-center">
         <div className="animate-pulse flex flex-col items-center">
           <Gem className="w-12 h-12 mb-4 text-primary animate-spin" />
           <p className="text-muted-foreground font-medium">
@@ -33,33 +33,9 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary overflow-x-hidden">
-      {/* Background Decorators - Modern Aurora Effect */}
-      <div className="fixed top-[-10%] left-[-20%] w-[800px] h-[800px] rounded-full bg-primary/10 blur-[150px] pointer-events-none mix-blend-screen" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-500/10 blur-[150px] pointer-events-none mix-blend-screen" />
-      <div className="fixed top-[40%] right-[-20%] w-[500px] h-[500px] rounded-full bg-rose-500/10 blur-[120px] pointer-events-none mix-blend-screen" />
-
-      <main className="container mx-auto px-4 py-12 max-w-6xl relative z-10 flex flex-col gap-10">
-        {/* Header */}
-        <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 animate-in fade-in slide-in-from-top-6 duration-700">
-          <div>
-            <div className="inline-flex items-center justify-center px-3 py-1 text-xs font-semibold tracking-wide uppercase rounded-full bg-primary/10 text-primary mb-4 border border-primary/20">
-              Personal Wealth
-            </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight flex items-center gap-3">
-              <Gem className="w-10 h-10 text-primary drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]" />
-              Finance Tracker
-            </h1>
-            <p className="text-muted-foreground mt-2 text-lg max-w-lg">
-              Manage your transactions, analyze your spending, and build your
-              wealth with elegance.
-            </p>
-          </div>
-        </header>
-
-        {/* Quick Add Form Component */}
-        <TransactionForm onAddTransaction={addTransaction} />
-
+    <main className="container mx-auto px-4 md:px-6 py-8 max-w-[1400px] flex flex-col lg:flex-row gap-8 items-start relative z-10">
+      {/* Left Column - Stats & Charts */}
+      <div className="flex-1 w-full flex flex-col gap-8">
         {/* Overview Cards */}
         <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-150 fill-mode-both">
           <OverviewCards
@@ -69,35 +45,23 @@ export default function Home() {
           />
         </section>
 
-        {/* Charts & List Grid */}
-        <div className="grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-8 flex flex-col gap-8">
+        {/* Charts */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <div className="xl:col-span-7 flex flex-col gap-6">
             <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300 fill-mode-both">
-              <div className="flex items-center justify-between mb-4 px-1">
-                <h2 className="text-2xl font-bold tracking-tight">
+              <div className="flex items-center justify-between mb-3 px-1">
+                <h2 className="text-xl font-bold tracking-tight">
                   Financial Flow
                 </h2>
               </div>
               <FinanceChart transactions={transactions} />
             </section>
-
-            <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 fill-mode-both">
-              <div className="flex items-center justify-between mb-4 px-1">
-                <h2 className="text-2xl font-bold tracking-tight">
-                  Recent Transactions
-                </h2>
-              </div>
-              <TransactionList
-                transactions={transactions}
-                onDelete={deleteTransaction}
-              />
-            </section>
           </div>
 
-          <div className="lg:col-span-4 flex flex-col gap-8">
-            <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-both">
-              <div className="flex items-center justify-between mb-4 px-1">
-                <h2 className="text-2xl font-bold tracking-tight">
+          <div className="xl:col-span-5 flex flex-col gap-6">
+            <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 fill-mode-both">
+              <div className="flex items-center justify-between mb-3 px-1">
+                <h2 className="text-xl font-bold tracking-tight">
                   Expense Categories
                 </h2>
               </div>
@@ -105,7 +69,27 @@ export default function Home() {
             </section>
           </div>
         </div>
-      </main>
-    </div>
+
+        {/* Transactions List */}
+        <div className="w-full pb-8">
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-700 fill-mode-both">
+            <div className="flex items-center justify-between mb-3 px-1">
+              <h2 className="text-xl font-bold tracking-tight">
+                Recent Transactions
+              </h2>
+            </div>
+            <TransactionList
+              transactions={transactions}
+              onDelete={deleteTransaction}
+            />
+          </section>
+        </div>
+      </div>
+
+      {/* Right Column - Sticky Transaction Form */}
+      <div className="w-full lg:w-[400px] xl:w-[420px] shrink-0 lg:sticky lg:top-8 animate-in fade-in slide-in-from-right-8 duration-700 delay-150 fill-mode-both">
+        <TransactionForm onAddTransaction={addTransaction} />
+      </div>
+    </main>
   );
 }

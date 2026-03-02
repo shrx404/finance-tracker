@@ -53,7 +53,7 @@ export function FinanceChart({ transactions }: FinanceChartProps) {
   }
 
   return (
-    <div className="h-[300px] w-full p-4 pl-0 border rounded-2xl bg-card/10 backdrop-blur-xl border-border/20 shadow-lg relative overflow-hidden group hover:bg-card/20 transition-all duration-500">
+    <div className="h-[300px] w-full p-4 pl-0 border-[1px] rounded-2xl bg-card/30 backdrop-blur-2xl border-border/40 shadow-2xl relative overflow-hidden group hover:border-primary/30 transition-all duration-500">
       <div className="absolute inset-0 bg-linear-to-tr from-primary/5 to-emerald-500/5 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart

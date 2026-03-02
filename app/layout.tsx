@@ -25,9 +25,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground relative selection:bg-primary/20 selection:text-primary overflow-x-hidden`}
       >
-        {children}
+        {/* Background Decorators - Modern Aurora Effect */}
+        <div className="fixed top-[-10%] left-[-20%] w-[800px] h-[800px] rounded-full bg-blue-500/10 blur-[150px] pointer-events-none mix-blend-screen z-0" />
+        <div className="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-500/10 blur-[150px] pointer-events-none mix-blend-screen z-0" />
+        <div className="fixed top-[40%] right-[-20%] w-[500px] h-[500px] rounded-full bg-rose-500/10 blur-[120px] pointer-events-none mix-blend-screen z-0" />
+
+        <div className="relative z-10 w-full h-full">{children}</div>
       </body>
     </html>
   );

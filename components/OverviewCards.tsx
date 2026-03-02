@@ -20,10 +20,10 @@ export function OverviewCards({
   };
 
   return (
-    <div className="grid gap-6 md:grid-cols-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
       {/* Balance Card */}
-      <Card className="relative overflow-hidden bg-card/20 backdrop-blur-2xl border-border/20 shadow-xl group transition-all duration-300 hover:shadow-primary/10 hover:-translate-y-1">
-        <div className="absolute inset-0 bg-linear-to-br from-primary/10 to-transparent opacity-50 pointer-events-none group-hover:opacity-100 transition-opacity duration-500" />
+      <Card className="relative overflow-hidden border-[1px] rounded-2xl bg-card/30 backdrop-blur-2xl border-border/40 shadow-xl group transition-all duration-500 hover:-translate-y-1 hover:border-rose-500/50">
+        <div className="absolute inset-0 bg-linear-to-br from-rose-500/10 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0 relative z-10">
           <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
             Total Balance
