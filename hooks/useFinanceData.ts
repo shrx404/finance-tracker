@@ -1,36 +1,74 @@
 import { useState, useEffect } from 'react';
-import { Transaction, TransactionType } from '../types';
-import { v4 as uuidv4 } from 'uuid';
+import { Transaction } from '../types';
+import { createClient } from '../lib/supabase';
 
 export const useFinanceData = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const supabase = createClient();
 
   useEffect(() => {
-    const saved = localStorage.getItem('finance_transactions');
-    if (saved) {
+    const fetchTransactions = async () => {
       try {
-        setTransactions(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse transactions', e);
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('*')
+          .order('date', { ascending: false });
+
+        if (error) throw error;
+        
+        if (data) {
+          setTransactions(data as Transaction[]);
+        }
+      } catch (error) {
+        console.error('Error fetching transactions:', error);
+      } finally {
+        setIsLoaded(true);
       }
-    }
-    setIsLoaded(true);
-  }, []);
+    };
 
-  useEffect(() => {
-    if (isLoaded) {
-      localStorage.setItem('finance_transactions', JSON.stringify(transactions));
-    }
-  }, [transactions, isLoaded]);
+    fetchTransactions();
+  }, [supabase]);
 
-  const addTransaction = (transaction: Omit<Transaction, 'id'>) => {
-    const newTransaction = { ...transaction, id: uuidv4() };
-    setTransactions((prev) => [newTransaction, ...prev]);
+  const addTransaction = async (transaction: Omit<Transaction, 'id'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('transactions')
+        .insert([
+          {
+            amount: transaction.amount,
+            type: transaction.type,
+            category: transaction.category,
+            description: transaction.description,
+            date: transaction.date,
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        setTransactions((prev) => [data as Transaction, ...prev]);
+      }
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+    }
   };
 
-  const deleteTransaction = (id: string) => {
-    setTransactions((prev) => prev.filter((t) => t.id !== id));
+  const deleteTransaction = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setTransactions((prev) => prev.filter((t) => t.id !== id));
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+    }
   };
 
   const totalIncome = transactions
