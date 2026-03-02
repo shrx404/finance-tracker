@@ -83,7 +83,7 @@ export const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
 
       <div className="flex flex-row md:flex-col md:items-center justify-between gap-4 mb-8">
         {/* Unified Type Toggle - Replaces older Dropdown */}
-        <div className="flex bg-muted/40 p-1.5 rounded-xl border border-border/40">
+        <div className="flex bg-muted/40 backdrop-blur-md p-1.5 rounded-xl border border-border/40">
           <button
             type="button"
             className={cn(
@@ -141,7 +141,7 @@ export const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
                 placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="h-14 pl-11 bg-background/60 border-border/60 focus-visible:ring-primary/20 text-2xl font-bold shadow-sm transition-all rounded-xl"
+                className="h-14 pl-11 bg-background/60 backdrop-blur-md border-border/60 focus-visible:ring-primary/20 text-2xl font-bold shadow-sm transition-all rounded-xl"
                 required
               />
             </div>
@@ -155,7 +155,7 @@ export const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-full h-14 justify-start text-left font-normal bg-background/60 border-border/60 hover:bg-background/80 transition-all shadow-sm rounded-xl text-base",
+                    "w-full h-14 justify-start text-left font-normal bg-background/60 backdrop-blur-md border-border/60 hover:bg-background/80 transition-all shadow-sm rounded-xl text-base",
                     !date && "text-muted-foreground",
                   )}
                 >
@@ -182,7 +182,7 @@ export const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
               Category
             </label>
             <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="h-14 bg-background/60 border-border/60 focus:ring-primary/20 transition-all shadow-sm rounded-xl text-base">
+              <SelectTrigger className="h-14 bg-background/60 backdrop-blur-md border-border/60 focus:ring-primary/20 transition-all shadow-sm rounded-xl text-base">
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent className="rounded-xl border-border/60 shadow-xl group/selectcontent">
@@ -209,7 +209,7 @@ export const TransactionForm = ({ onAddTransaction }: TransactionFormProps) => {
               placeholder="What was this for?"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="h-14 bg-background/60 border-border/60 focus-visible:ring-primary/20 transition-all shadow-sm rounded-xl text-base placeholder:text-muted-foreground/50"
+              className="h-14 bg-background/60 backdrop-blur-md border-border/60 focus-visible:ring-primary/20 transition-all shadow-sm rounded-xl text-base placeholder:text-muted-foreground/50"
             />
           </div>
         </div>

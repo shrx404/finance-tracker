@@ -42,8 +42,9 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
 
   if (transactions.filter((t) => t.type === "EXPENSE").length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/40 rounded-2xl bg-card shadow-lg h-[300px]">
-        <p className="text-muted-foreground text-sm font-medium">
+      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/40 rounded-2xl bg-card/30 backdrop-blur-2xl shadow-lg h-[300px] relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none opacity-50" />
+        <p className="text-muted-foreground text-sm font-medium relative z-10">
           Add expenses to see breakdown
         </p>
       </div>

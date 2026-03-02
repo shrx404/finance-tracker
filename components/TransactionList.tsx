@@ -39,14 +39,15 @@ export function TransactionList({
 
   if (transactions.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/40 rounded-2xl bg-card shadow-lg">
-        <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4 border border-border/50">
+      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/40 rounded-2xl bg-card/30 backdrop-blur-2xl shadow-lg relative overflow-hidden">
+        <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none opacity-50" />
+        <div className="w-16 h-16 rounded-full bg-muted/50 backdrop-blur-md flex items-center justify-center mb-4 border border-border/50 relative z-10">
           <TrendingUp className="w-8 h-8 text-muted-foreground/60" />
         </div>
-        <h3 className="text-xl font-bold mb-2 text-foreground">
+        <h3 className="text-xl font-bold mb-2 text-foreground relative z-10">
           No Transactions Yet
         </h3>
-        <p className="text-muted-foreground text-sm max-w-xs mx-auto">
+        <p className="text-muted-foreground text-sm max-w-xs mx-auto relative z-10">
           Start building your financial history by adding an income or expense
           above.
         </p>
@@ -55,9 +56,10 @@ export function TransactionList({
   }
 
   return (
-    <div className="rounded-2xl border border-border/40 bg-card shadow-lg overflow-hidden relative">
-      <Table>
-        <TableHeader className="bg-muted/30 border-b border-border/40">
+    <div className="rounded-2xl border border-border/40 bg-card/30 backdrop-blur-2xl shadow-2xl overflow-hidden relative transition-all duration-500 hover:border-border/50">
+      <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none opacity-30" />
+      <Table className="relative z-10">
+        <TableHeader className="bg-muted/20 border-b border-border/40 backdrop-blur-md">
           <TableRow className="hover:bg-transparent">
             <TableHead className="w-[120px] text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Date
