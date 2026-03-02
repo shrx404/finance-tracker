@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TransactionType } from "@/types";
-import { PlusCircle } from "lucide-react";
+import { Plus, ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 
 interface TransactionFormProps {
   onAddTransaction: (transaction: {
@@ -60,13 +60,24 @@ export function TransactionForm({ onAddTransaction }: TransactionFormProps) {
   };
 
   return (
-    <div className="bg-card/30 backdrop-blur-xl border border-border/50 rounded-2xl p-4 shadow-lg mb-8 animate-in fade-in slide-in-from-top-4 duration-500">
+    <div className="bg-card border border-border shadow-xl rounded-2xl p-5 mb-8 relative overflow-hidden group transition-all duration-300 hover:border-primary/50">
+      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-emerald-500 to-rose-500 opacity-80"></div>
+
+      <div className="flex items-center gap-2 mb-5">
+        <div className="p-2 bg-primary/10 rounded-lg">
+          <Plus className="w-4 h-4 text-primary" />
+        </div>
+        <h3 className="font-semibold text-foreground tracking-tight">
+          Record Transaction
+        </h3>
+      </div>
+
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col md:flex-row gap-4 items-end"
+        className="grid grid-cols-1 md:grid-cols-5 gap-5 items-end"
       >
-        <div className="flex-1 space-y-2 w-full">
-          <label className="text-xs font-medium text-muted-foreground ml-1">
+        <div className="space-y-2 w-full">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
             Type
           </label>
           <Select
@@ -76,38 +87,51 @@ export function TransactionForm({ onAddTransaction }: TransactionFormProps) {
               setCategory("");
             }}
           >
-            <SelectTrigger className="bg-background/50 focus:ring-primary/20">
+            <SelectTrigger className="h-11 bg-background border-border/60 focus:ring-primary/20 transition-all font-medium">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="EXPENSE">Expense</SelectItem>
-              <SelectItem value="INCOME">Income</SelectItem>
+              <SelectItem value="EXPENSE">
+                <span className="flex items-center gap-2 text-rose-500">
+                  <ArrowDownCircle className="w-4 h-4" /> Expense
+                </span>
+              </SelectItem>
+              <SelectItem value="INCOME">
+                <span className="flex items-center gap-2 text-emerald-500">
+                  <ArrowUpCircle className="w-4 h-4" /> Income
+                </span>
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        <div className="flex-1 space-y-2 w-full">
-          <label className="text-xs font-medium text-muted-foreground ml-1">
+        <div className="space-y-2 w-full">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
             Amount
           </label>
-          <Input
-            type="number"
-            step="0.01"
-            placeholder="0.00"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="bg-background/50 focus-visible:ring-primary/20"
-            required
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">
+              $
+            </span>
+            <Input
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="h-11 pl-7 bg-background border-border/60 focus-visible:ring-primary/20 text-lg font-bold transition-all"
+              required
+            />
+          </div>
         </div>
 
-        <div className="flex-[1.5] space-y-2 w-full">
-          <label className="text-xs font-medium text-muted-foreground ml-1">
-            Category (Optional)
+        <div className="space-y-2 w-full">
+          <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
+            Category (Opt)
           </label>
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger className="bg-background/50 focus:ring-primary/20">
-              <SelectValue placeholder="Auto" />
+            <SelectTrigger className="h-11 bg-background border-border/60 focus:ring-primary/20 transition-all">
+              <SelectValue placeholder="Select" />
             </SelectTrigger>
             <SelectContent>
               {CATEGORIES[type].map((c) => (
@@ -119,24 +143,25 @@ export function TransactionForm({ onAddTransaction }: TransactionFormProps) {
           </Select>
         </div>
 
-        <div className="flex-[2] space-y-2 w-full">
-          <label className="text-xs font-medium text-muted-foreground ml-1">
-            Description (Optional)
-          </label>
-          <Input
-            placeholder="What was this for?"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="bg-background/50 focus-visible:ring-primary/20"
-          />
+        <div className="space-y-2 w-full md:col-span-2 flex gap-4 items-end">
+          <div className="flex-1 space-y-2">
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider ml-1">
+              Description (Opt)
+            </label>
+            <Input
+              placeholder="What was this for?"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="h-11 bg-background border-border/60 focus-visible:ring-primary/20 transition-all placeholder:text-muted-foreground/50"
+            />
+          </div>
+          <Button
+            type="submit"
+            className="h-11 px-8 gap-2 font-bold shadow-lg hover:shadow-primary/25 transition-all"
+          >
+            Add
+          </Button>
         </div>
-
-        <Button
-          type="submit"
-          className="w-full md:w-auto gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/25 transition-all h-10"
-        >
-          <PlusCircle className="w-4 h-4" /> Add
-        </Button>
       </form>
     </div>
   );

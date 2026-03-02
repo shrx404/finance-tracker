@@ -16,11 +16,13 @@ interface ExpensePieChartProps {
 }
 
 const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
+  "#0ea5e9", // sky-500
+  "#10b981", // emerald-500
+  "#f59e0b", // amber-500
+  "#8b5cf6", // violet-500
+  "#f43f5e", // rose-500
+  "#06b6d4", // cyan-500
+  "#ec4899", // pink-500
 ];
 
 export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
@@ -46,8 +48,8 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
 
   if (transactions.filter((t) => t.type === "EXPENSE").length === 0) {
     return (
-      <div className="flex h-[300px] w-full items-center justify-center border rounded-lg bg-card/10 backdrop-blur-md border-border/20">
-        <p className="text-muted-foreground text-sm">
+      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/40 rounded-2xl bg-card shadow-lg h-[300px]">
+        <p className="text-muted-foreground text-sm font-medium">
           Add expenses to see breakdown
         </p>
       </div>
@@ -55,16 +57,16 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
   }
 
   return (
-    <div className="h-[300px] w-full p-4 border rounded-2xl bg-card/10 backdrop-blur-xl border-border/20 shadow-lg relative overflow-hidden group hover:bg-card/20 transition-all duration-500">
-      <div className="absolute inset-0 bg-gradient-to-br from-chart-1/5 to-chart-2/5 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="h-[300px] w-full p-4 border border-border/40 rounded-2xl bg-card shadow-lg relative overflow-hidden group hover:border-primary/30 transition-all duration-500">
+      <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            innerRadius={60}
-            outerRadius={90}
+            innerRadius={65}
+            outerRadius={95}
             paddingAngle={5}
             dataKey="value"
             stroke="none"
@@ -79,21 +81,23 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
           <Tooltip
             formatter={(value: number) => `$${value.toFixed(2)}`}
             contentStyle={{
-              backgroundColor: "hsl(var(--card))",
-              borderColor: "hsl(var(--border))",
+              backgroundColor: "#18181b",
+              borderColor: "#27272a",
               borderRadius: "12px",
-              color: "hsl(var(--foreground))",
-              boxShadow:
-                "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+              color: "#f4f4f5",
+              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.5)",
             }}
-            itemStyle={{ color: "hsl(var(--foreground))" }}
+            itemStyle={{ color: "#f4f4f5", fontWeight: 600 }}
           />
           <Legend
             verticalAlign="bottom"
             height={36}
             iconType="circle"
             formatter={(value) => (
-              <span className="text-sm font-medium text-muted-foreground ml-1">
+              <span
+                className="text-sm font-semibold"
+                style={{ color: "#a1a1aa" }}
+              >
                 {value}
               </span>
             )}

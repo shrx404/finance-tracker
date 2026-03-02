@@ -16,6 +16,21 @@ interface TransactionListProps {
   onDelete: (id: string) => void;
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Salary: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
+  Freelance: "bg-teal-500/15 text-teal-500 border-teal-500/30",
+  Investments: "bg-indigo-500/15 text-indigo-500 border-indigo-500/30",
+  Housing: "bg-rose-500/15 text-rose-500 border-rose-500/30",
+  Food: "bg-orange-500/15 text-orange-500 border-orange-500/30",
+  Transportation: "bg-blue-500/15 text-blue-500 border-blue-500/30",
+  Utilities: "bg-cyan-500/15 text-cyan-500 border-cyan-500/30",
+  Entertainment: "bg-purple-500/15 text-purple-500 border-purple-500/30",
+  Healthcare: "bg-red-500/15 text-red-500 border-red-500/30",
+  "Other Income": "bg-green-500/15 text-green-500 border-green-500/30",
+  "Other Expense": "bg-slate-500/15 text-slate-500 border-slate-500/30",
+  Other: "bg-slate-500/15 text-slate-500 border-slate-500/30",
+};
+
 export function TransactionList({
   transactions,
   onDelete,
@@ -28,14 +43,21 @@ export function TransactionList({
     return type === "INCOME" ? `+${formatted}` : `-${formatted}`;
   };
 
+  const getCategoryColor = (category?: string) => {
+    if (!category) return CATEGORY_COLORS["Other"];
+    return CATEGORY_COLORS[category] || CATEGORY_COLORS["Other"];
+  };
+
   if (transactions.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/20 rounded-2xl bg-card/10 backdrop-blur-xl shadow-lg">
-        <div className="w-16 h-16 rounded-full bg-muted/20 flex items-center justify-center mb-4">
-          <TrendingUp className="w-8 h-8 text-muted-foreground/50" />
+      <div className="flex flex-col items-center justify-center p-12 text-center border border-border/40 rounded-2xl bg-card shadow-lg">
+        <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4 border border-border/50">
+          <TrendingUp className="w-8 h-8 text-muted-foreground/60" />
         </div>
-        <h3 className="text-xl font-semibold mb-2">No Transactions Yet</h3>
-        <p className="text-muted-foreground max-w-xs mx-auto">
+        <h3 className="text-xl font-bold mb-2 text-foreground">
+          No Transactions Yet
+        </h3>
+        <p className="text-muted-foreground text-sm max-w-xs mx-auto">
           Start building your financial history by adding an income or expense
           above.
         </p>
@@ -44,51 +66,55 @@ export function TransactionList({
   }
 
   return (
-    <div className="rounded-2xl border border-border/20 bg-card/10 backdrop-blur-xl shadow-lg overflow-hidden">
+    <div className="rounded-2xl border border-border/40 bg-card shadow-lg overflow-hidden relative">
       <Table>
-        <TableHeader className="bg-muted/10 border-b border-border/20">
+        <TableHeader className="bg-muted/30 border-b border-border/40">
           <TableRow className="hover:bg-transparent">
-            <TableHead className="w-[100px] text-xs uppercase tracking-wider text-muted-foreground">
+            <TableHead className="w-[120px] text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Date
             </TableHead>
-            <TableHead className="text-xs uppercase tracking-wider text-muted-foreground">
+            <TableHead className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Details
             </TableHead>
-            <TableHead className="text-right text-xs uppercase tracking-wider text-muted-foreground">
+            <TableHead className="text-xs font-bold uppercase tracking-wider text-muted-foreground text-center">
+              Category
+            </TableHead>
+            <TableHead className="text-right text-xs font-bold uppercase tracking-wider text-muted-foreground">
               Amount
             </TableHead>
-            <TableHead className="w-[50px]"></TableHead>
+            <TableHead className="w-[60px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {transactions.map((t) => (
             <TableRow
               key={t.id}
-              className="group hover:bg-muted/20 border-b border-border/10 transition-colors"
+              className="group hover:bg-muted/30 border-b border-border/20 transition-all duration-200 cursor-default"
             >
-              <TableCell className="font-medium whitespace-nowrap text-muted-foreground">
+              <TableCell className="font-medium whitespace-nowrap text-muted-foreground text-sm">
                 {format(new Date(t.date), "MMM d, yyyy")}
               </TableCell>
               <TableCell>
-                <div className="flex flex-col">
-                  <span className="font-medium text-foreground">
-                    {t.description || "Untitled Transaction"}
-                  </span>
-                  <span className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50"></span>
-                    {t.category || "Uncategorized"}
-                  </span>
-                </div>
+                <span className="font-semibold text-foreground">
+                  {t.description || "Untitled Transaction"}
+                </span>
+              </TableCell>
+              <TableCell className="text-center">
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${getCategoryColor(t.category)}`}
+                >
+                  {t.category || "Other"}
+                </span>
               </TableCell>
               <TableCell>
                 <div
-                  className={`flex items-center justify-end font-bold tracking-tight ${t.type === "INCOME" ? "text-emerald-500" : "text-foreground"}`}
+                  className={`flex items-center justify-end font-bold text-base tracking-tight ${t.type === "INCOME" ? "text-emerald-500" : "text-foreground"}`}
                 >
                   {t.type === "EXPENSE" && (
-                    <TrendingDown className="w-3 h-3 mr-1 text-rose-500" />
+                    <TrendingDown className="w-4 h-4 mr-1.5 text-rose-500" />
                   )}
                   {t.type === "INCOME" && (
-                    <TrendingUp className="w-3 h-3 mr-1 text-emerald-500" />
+                    <TrendingUp className="w-4 h-4 mr-1.5 text-emerald-500" />
                   )}
                   {formatCurrency(t.amount, t.type)}
                 </div>
@@ -97,7 +123,7 @@ export function TransactionList({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all hover:bg-destructive/10 hover:text-destructive"
+                  className="h-9 w-9 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all hover:bg-destructive/15 hover:text-destructive shrink-0"
                   onClick={() => onDelete(t.id)}
                 >
                   <Trash2 className="h-4 w-4" />

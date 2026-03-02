@@ -54,7 +54,7 @@ export function FinanceChart({ transactions }: FinanceChartProps) {
 
   return (
     <div className="h-[300px] w-full p-4 pl-0 border rounded-2xl bg-card/10 backdrop-blur-xl border-border/20 shadow-lg relative overflow-hidden group hover:bg-card/20 transition-all duration-500">
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-emerald-500/5 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-linear-to-tr from-primary/5 to-emerald-500/5 pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
@@ -78,14 +78,14 @@ export function FinanceChart({ transactions }: FinanceChartProps) {
           <XAxis
             dataKey="date"
             tickFormatter={(str) => format(parseISO(str), "MMM d")}
-            stroke="hsl(var(--muted-foreground))"
+            stroke="#a1a1aa"
             fontSize={12}
             tickLine={false}
             axisLine={false}
             dy={10}
           />
           <YAxis
-            stroke="hsl(var(--muted-foreground))"
+            stroke="#a1a1aa"
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -94,14 +94,13 @@ export function FinanceChart({ transactions }: FinanceChartProps) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: "hsl(var(--card))",
-              borderColor: "hsl(var(--border))",
+              backgroundColor: "#18181b",
+              borderColor: "#27272a",
               borderRadius: "12px",
-              color: "hsl(var(--foreground))",
-              boxShadow:
-                "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+              color: "#f4f4f5",
+              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.5)",
             }}
-            itemStyle={{ color: "hsl(var(--foreground))", fontWeight: 500 }}
+            itemStyle={{ color: "#f4f4f5", fontWeight: 500 }}
             labelFormatter={(label) =>
               format(parseISO(label as string), "MMM d, yyyy")
             }
