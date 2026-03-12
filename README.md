@@ -1,8 +1,8 @@
 # Finance Tracker
 
-Finance Tracker is a modern, feature-rich personal finance management application built with Next.js and Supabase. It features a stunning dark-mode UI with glassmorphism and animated Aurora background effects.
-
 ![Finance Tracker Screenshot](./Screenshot.png)
+
+Finance Tracker is a modern, feature-rich personal finance management application built with Next.js and Supabase. It features a stunning dark-mode UI with glassmorphism and animated Aurora background effects.
 
 ## 🚀 Features
 
